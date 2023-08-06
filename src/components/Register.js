@@ -1,5 +1,7 @@
 import {useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 const Register = () => {
     const [newRestaurant, setNewRestaurant] = useState({
@@ -8,22 +10,25 @@ const Register = () => {
         contact: ''
     }); 
     
+    const navigate = useNavigate();
+
     const handleInput = (event) => {
-        setNewRestaurant({...newRestaurant, [event.target.name]: event.target.value})
+        setNewRestaurant({...newRestaurant, [event.target.name]: event.target.value});
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Send Data to Server
+        // Post new restaurant
         // console.log(newRestaurant);
         axios.post('http://localhost:5000/addRestaurant', newRestaurant)
-        .then(res => {
+        .then(() => {
             // console.log(res);
             setNewRestaurant({
                 name: '',
                 address: '',
                 contact: ''
             });
+            navigate("/");
         })
         .catch(err => console.log(err));
     }
