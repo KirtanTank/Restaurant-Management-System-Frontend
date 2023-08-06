@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <>
+    <div className="bg-amber-500 h-screen">
     <Navbar />
     <BrowserRouter>
       <Routes>
@@ -13,7 +13,7 @@ function App() {
         <Route path='/Register' element={<Register />}></Route>
       </Routes>
     </BrowserRouter>
-    </>
+    </div>
   );
 }
 
