@@ -3,14 +3,13 @@ import { useEffect, useCallback, useState } from 'react';
 
 const Home = () => {
 
-    const [data, setData] = useState([]);
     const [show, setShow] = useState(false);
-
+    
     // Get Restaurant
+    const [data, setData] = useState([]);
     const getData = useCallback(() => {
         axios.get("http://localhost:5000/")
         .then((res) => {
-            // console.log(res.data);
             setData(res.data);
         })
         .catch((err) => {
@@ -32,7 +31,7 @@ const Home = () => {
         window.location.reload(true);
     }
 
-    
+    // Declaration of fields
     const [state, setState] = useState({
         name: '',
         address: '',
@@ -45,29 +44,35 @@ const Home = () => {
         setState({...state, [event.target.name]: event.target.value});
     }    
     const [eleId, setEleId] = useState(null);
+
     // Open the edit form
     const openEditForm = (id) => {
         setShow(true);
         setEleId(id);
         axios.get(`http://localhost:5000/${id}`)
         .then((res) => {
-            // console.log(res.data[0]);
             setState({...res.data[0]})
         })
         .catch((err) => console.log(err));
     }
 
+    // Closing the edit form
     const closeModal = ()=>{
         setShow(false);
     }
+
+    // Update request
     const updateDetails = () => {
+        if(name === "" || address === "" || contact === ""){
+            alert("Field can not be empty!");
+        }else{
         axios.put(`http://localhost:5000/${eleId}`, {name, address, contact})
         .then((res) => {
-            console.log(res);
             setShow(false);
         })
         .catch(err => console.log(err));
         window.location.reload(true);
+        }
     }
 
     return (
@@ -104,25 +109,25 @@ const Home = () => {
                                 <div className="col-span-2">
                                     <input type="text" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='name'
-                                    value={name || ""}
+                                    value={name}
                                     onChange={handleInput}
-                                    required />
+                                    />
                                 </div>
 
                                 <div className="col-span-2">
                                     <input type="text" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='address'
-                                    value={address || ""}
+                                    value={address}
                                     onChange={handleInput}
-                                    required />
+                                    />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <input type="number" cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
+                                    <input type="tel" pattern="[0-9]{5}[0-9]{5}" cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='contact'
-                                    value={contact || ""}
+                                    value={contact}
                                     onChange={handleInput}
-                                    required />
+                                    />
                                 </div>
 
                                 <div className="col-span-2 lg:col-span-1">

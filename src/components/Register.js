@@ -18,11 +18,9 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Post new restaurant
-        // console.log(newRestaurant);
+        // Add new restaurant
         axios.post('http://localhost:5000/addRestaurant', newRestaurant)
         .then(() => {
-            // console.log(res);
             setNewRestaurant({
                 name: '',
                 address: '',
@@ -48,7 +46,7 @@ const Register = () => {
                         </div>
 
                         <div className="col-span-2">
-                            <input type="number" name='contact' onChange={handleInput} cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" id="restaurantContact" placeholder="Contact Number" required />
+                            <input type="tel" pattern="[0-9]{5}[0-9]{5}" name='contact' onChange={handleInput} cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" id="restaurantContact" placeholder="Contact Number(01234-56789)" required />
                         </div>
 
                         <div className="col-span-2 text-right">
