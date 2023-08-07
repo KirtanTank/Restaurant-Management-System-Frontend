@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,8 @@ const Register = () => {
     const [newRestaurant, setNewRestaurant] = useState({
         name: '',
         address: '',
-        contact: ''
+        contact: '',
+        added_by: ''
     }); 
     
     const navigate = useNavigate();
@@ -24,12 +25,30 @@ const Register = () => {
             setNewRestaurant({
                 name: '',
                 address: '',
-                contact: ''
+                contact: '',
+                added_by: ''
             });
             navigate("/");
         })
         .catch(err => console.log(err));
     }
+
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    // Get users request
+    const [userArr, setUserArr] = useState([]);
+    const getUser = () => {
+        axios.get('http://localhost:5000/users')
+        .then((res) => {
+            setUserArr(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     return (
         <div className="m-10">
             <div className="max-w-2xl bg-white px-5 m-auto w-full border border-gray-200 rounded-lg shadow-2xl flex flex-col p-16">
@@ -47,6 +66,13 @@ const Register = () => {
 
                         <div className="col-span-2">
                             <input type="tel" pattern="[0-9]{5}[0-9]{5}" name='contact' onChange={handleInput} cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" id="restaurantContact" placeholder="Contact Number(01234-56789)" required />
+                        </div>
+
+                        <div className="col-span-2">
+                        <select id="default" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" onChange={handleInput} name='added_by'>
+                        {userArr.map((user) => {
+                            return <option key={user.id} value={user.name} onChange={(e) => {console.log(e.target.value)}}>{user.name}</option>})}
+                        </select>
                         </div>
 
                         <div className="col-span-2 text-right">
