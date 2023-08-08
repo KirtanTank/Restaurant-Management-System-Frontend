@@ -20,7 +20,7 @@ const Register = () => {
         e.preventDefault();
 
         // Add new restaurant
-        axios.post('http://localhost:5000/addRestaurant', newRestaurant)
+        axios.post('http://localhost:5000/api/restaurants/addRestaurants', newRestaurant)
         .then(() => {
             setNewRestaurant({
                 name: '',
@@ -40,7 +40,7 @@ const Register = () => {
     // Get users request
     const [userArr, setUserArr] = useState([]);
     const getUser = () => {
-        axios.get('http://localhost:5000/users')
+        axios.get('http://localhost:5000/api/restaurants/getAllUsers')
         .then((res) => {
             setUserArr(res.data);
         })

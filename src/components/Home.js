@@ -8,7 +8,7 @@ const Home = () => {
     // Get Restaurant
     const [data, setData] = useState([]);
     const getData = useCallback(() => {
-        axios.get("http://localhost:5000/")
+        axios.get("http://localhost:5000/api/restaurants/getAllRestaurants")
         .then((res) => {
             setData(res.data);
         })
@@ -79,7 +79,7 @@ const Home = () => {
     //Get users request
     const [userArr, setUserArr] = useState([]);
     const getUser = () => {
-        axios.get('http://localhost:5000/users')
+        axios.get('http://localhost:5000/api/restaurants/getAllUsers')
         .then((res) => {
             setUserArr(res.data);
         })
