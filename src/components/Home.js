@@ -35,10 +35,11 @@ const Home = () => {
     const [state, setState] = useState({
         name: '',
         address: '',
-        contact: ''
+        contact: '',
+        added_by: ''
     }); 
 
-    const { name, address, contact } = state;
+    const { name, address, contact, added_by } = state;
     
     const handleInput = (event) => {
         setState({...state, [event.target.name]: event.target.value});
@@ -66,7 +67,7 @@ const Home = () => {
         if(name === "" || address === "" || contact === ""){
             alert("Field can not be empty!");
         }else{
-        axios.put(`http://localhost:5000/${eleId}`, {name, address, contact})
+        axios.put(`http://localhost:5000/${eleId}`, {name, address, contact, added_by})
         .then((res) => {
             setShow(false);
         })
@@ -74,6 +75,22 @@ const Home = () => {
         window.location.reload(true);
         }
     }
+
+    //Get users request
+    const [userArr, setUserArr] = useState([]);
+    const getUser = () => {
+        axios.get('http://localhost:5000/users')
+        .then((res) => {
+            setUserArr(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    useEffect(() => {
+        getUser();
+    }, [])
 
     return (
         <div>
@@ -85,7 +102,7 @@ const Home = () => {
                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{item.name}</h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400">{item.address}</span>
                     <span className="text-sm text-gray-500 dark:text-gray-400">{item.contact}</span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{item.added_by}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">Added By: {item.added_by}</span>
                     <div className="flex mt-4 space-x-3 md:mt-6">
                         <div className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-indigo-900 rounded-lg hover:bg-amber-500 hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-indigo-900 dark:hover:bg-amber-500 dark:focus:ring-blue-800 cursor-pointer"
                         onClick={() => deleteRestaurant(item.id)}>
@@ -99,7 +116,6 @@ const Home = () => {
             </div>  
             })}      
             </div>
-
 
             {show && <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
                 <div className="max-w-2xl bg-indigo-900 px-5 m-auto w-fit p-5 rounded-lg">
@@ -130,6 +146,19 @@ const Home = () => {
                                     onChange={handleInput}
                                     />
                                 </div>
+
+                            <div className="col-span-2">
+                                <select 
+                                name='added_by' 
+                                className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" 
+                                value={added_by}
+                                onChange={handleInput}
+                                >
+                                    {userArr.map((user) => {
+                                        return <option key={user.id} onChange={handleInput}>{user.name}</option>
+                                    })}
+                                </select>
+                            </div>
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <button type='button' className="py-3 px-6 rounded-md bg-green-500 text-white font-bold w-full sm:w-32" onClick={() => closeModal()}>CANCEL</button>

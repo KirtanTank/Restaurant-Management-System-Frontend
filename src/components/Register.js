@@ -69,7 +69,8 @@ const Register = () => {
                         </div>
 
                         <div className="col-span-2">
-                        <select id="default" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" onChange={handleInput} name='added_by'>
+                        <select id="default" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" defaultValue={'DEFAULT'}onChange={handleInput} name='added_by'>
+                            <option value={'DEFAULT'} disabled>Choose user</option>
                         {userArr.map((user) => {
                             return <option key={user.id} value={user.name} onChange={(e) => {console.log(e.target.value)}}>{user.name}</option>})}
                         </select>
