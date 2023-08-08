@@ -26,7 +26,7 @@ const Home = () => {
     // Delete Restaurant
     const deleteRestaurant = (id) => {
         if(window.confirm("Are you sure?")){
-            axios.delete(`http://localhost:5000/${id}`);
+            axios.delete(`http://localhost:5000/api/restaurants/${id}`);
         }
         window.location.reload(true);
     }
@@ -50,9 +50,9 @@ const Home = () => {
     const openEditForm = (id) => {
         setShow(true);
         setEleId(id);
-        axios.get(`http://localhost:5000/${id}`)
+        axios.get(`http://localhost:5000/api/restaurants/${id}`)
         .then((res) => {
-            setState({...res.data[0]})
+            setState({...res.data});
         })
         .catch((err) => console.log(err));
     }
@@ -67,7 +67,7 @@ const Home = () => {
         if(name === "" || address === "" || contact === ""){
             alert("Field can not be empty!");
         }else{
-        axios.put(`http://localhost:5000/${eleId}`, {name, address, contact, added_by})
+        axios.put(`http://localhost:5000/api/restaurants/${eleId}`, {name, address, contact, added_by})
         .then((res) => {
             setShow(false);
         })
