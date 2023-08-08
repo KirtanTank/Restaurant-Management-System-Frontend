@@ -65,11 +65,11 @@ const Register = () => {
                         </div>
 
                         <div className="col-span-2">
-                            <input type="tel" pattern="[0-9]{5}[0-9]{5}" name='contact' onChange={handleInput} cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" id="restaurantContact" placeholder="Contact Number(01234-56789)" required />
+                            <input type='text' pattern='[0-9]{5}[0-9]{5}' name='contact' onChange={handleInput} cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" id="restaurantContact" placeholder="Contact Number(99999-99999)" required />
                         </div>
 
                         <div className="col-span-2">
-                        <select id="default" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" defaultValue={'DEFAULT'}onChange={handleInput} name='added_by'>
+                        <select className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" defaultValue={'DEFAULT'}onChange={handleInput} name='added_by'>
                             <option value={'DEFAULT'} disabled>Choose user</option>
                         {userArr.map((user) => {
                             return <option key={user.id} value={user.name} onChange={(e) => {console.log(e.target.value)}}>{user.name}</option>})}

@@ -140,7 +140,7 @@ const Home = () => {
                                 </div>
 
                                 <div className="col-span-2">
-                                    <input type="tel" pattern="[0-9]{5}[0-9]{5}" cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
+                                    <input type="text" pattern="[0-9]{5}[0-9]{5}" cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='contact'
                                     value={contact}
                                     onChange={handleInput}
