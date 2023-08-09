@@ -31,28 +31,22 @@ const Home = () => {
         window.location.reload(true);
     }
 
-    // Declaration of fields
-    const [state, setState] = useState({
-        name: '',
-        address: '',
-        contact: '',
-        added_by: ''
-    }); 
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+    const [contact, setContact] = useState("");
+    const [added_by, setAdded_by] = useState("");
 
-    const { name, address, contact, added_by } = state;
-    
-    const handleInput = (event) => {
-        setState({...state, [event.target.name]: event.target.value});
-    }    
     const [eleId, setEleId] = useState(null);
-
     // Open the edit form
     const openEditForm = (id) => {
         setShow(true);
         setEleId(id);
         axios.get(`http://localhost:5000/api/restaurants/${id}`)
         .then((res) => {
-            setState({...res.data});
+            setName(res.data.name);
+            setAddress(res.data.address);
+            setContact(res.data.contact);
+            setAdded_by(res.data.added_by);
         })
         .catch((err) => console.log(err));
     }
@@ -64,10 +58,16 @@ const Home = () => {
 
     // Update request
     const updateDetails = () => {
+        const newPayload = {
+            name,
+            address,
+            contact,
+            added_by
+        }
         if(name === "" || address === "" || contact === ""){
             alert("Field can not be empty!");
         }else{
-        axios.put(`http://localhost:5000/api/restaurants/${eleId}`, {name, address, contact, added_by})
+        axios.put(`http://localhost:5000/api/restaurants/${eleId}`, newPayload)
         .then((res) => {
             setShow(false);
         })
@@ -102,7 +102,7 @@ const Home = () => {
                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{item.name}</h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400">{item.address}</span>
                     <span className="text-sm text-gray-500 dark:text-gray-400">{item.contact}</span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">Added By: {item.added_by}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">Added By: {item.user.name}</span>
                     <div className="flex mt-4 space-x-3 md:mt-6">
                         <div className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-indigo-900 rounded-lg hover:bg-amber-500 hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-indigo-900 dark:hover:bg-amber-500 dark:focus:ring-blue-800 cursor-pointer"
                         onClick={() => deleteRestaurant(item.id)}>
@@ -127,7 +127,7 @@ const Home = () => {
                                     <input type="text" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='name'
                                     value={name}
-                                    onChange={handleInput}
+                                    onChange={(e) => setName(e.target.value)}
                                     />
                                 </div>
 
@@ -135,7 +135,7 @@ const Home = () => {
                                     <input type="text" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='address'
                                     value={address}
-                                    onChange={handleInput}
+                                    onChange={(e) => {setAddress(e.target.value)}}
                                     />
                                 </div>
 
@@ -143,19 +143,21 @@ const Home = () => {
                                     <input type="text" pattern="[0-9]{5}[0-9]{5}" cols="30" rows="8" className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                     name='contact'
                                     value={contact}
-                                    onChange={handleInput}
+                                    onChange={(e) => {setContact(e.target.value)}}
                                     />
                                 </div>
 
                             <div className="col-span-2">
                                 <select 
                                 name='added_by' 
-                                className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md" 
+                                className="border-solid border-gray-400 border-2 p-3 md:text-xl w-full rounded-md"
                                 value={added_by}
-                                onChange={handleInput}
+                                onChange={(e) => {setAdded_by(e.target.value)}}
                                 >
                                     {userArr.map((user) => {
-                                        return <option key={user.id} onChange={handleInput}>{user.name}</option>
+                                        return <option key={user.id} value={user.id}>
+                                            {user.name}
+                                            </option>
                                     })}
                                 </select>
                             </div>
